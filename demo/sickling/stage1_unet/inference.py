@@ -1,9 +1,4 @@
-"""Frozen U-Net inference helpers.
-
-Architecture mirrors the model defined in ``training 2.ipynb`` so the
-``unet_fold_*_best.pth`` checkpoints load with no key remapping. Use
-:func:`load_unet` and :func:`predict_label_map` to score new raw images.
-"""
+"""U-Net architecture and sliding-window inference helpers."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -30,9 +25,8 @@ class _DoubleConv(nn.Module):
 
 
 class UNet(nn.Module):
-    """Same architecture as ``training 2.ipynb``: 1-channel input, configurable
-    output classes. Default 4 classes matches the project convention
-    (0=polymer, 1=background, 2=cell_body, 3=cell_border)."""
+    """1-channel U-Net with configurable output classes.
+    Default 4 classes: 0=polymer, 1=background, 2=cell_body, 3=cell_border."""
 
     def __init__(self, n_channels: int = 1, n_classes: int = 4) -> None:
         super().__init__()
@@ -91,8 +85,7 @@ def predict_label_map(
 
     Args:
         model: a U-Net in eval mode.
-        raw_norm: 2-D float32 array, percentile-normalized to [0, 1] using the
-            project's ``normalize_image``.
+        raw_norm: 2-D float32 array, percentile-normalized to [0, 1].
         tile_size: window size (must match training).
         overlap: 0.5 = 50% stride overlap.
         n_classes: number of output classes.

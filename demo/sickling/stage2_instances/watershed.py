@@ -1,19 +1,13 @@
-"""Stage 2 — convert a 4-class semantic label map into an integer instance
-label image via marker-seeded watershed.
+"""Convert a 4-class semantic label map into an integer instance label image
+via marker-seeded watershed.
 
-The pipeline (mirrors PIPELINE_PLAN §2 Stage 2):
-
-    1. foreground = (==polymer) | (==cell_body)        # polymer is part of the
-                                                        # sickle cell's morphology
-    2. morphological closing on foreground             # bridge thin gaps
-    3. Euclidean distance transform on closed fg
-    4. peak_local_max on distance transform → markers   # 1 per cell center
-    5. watershed on -distance, masked to closed fg
+Pipeline:
+    1. foreground = (==polymer) | (==cell_body)
+    2. morphological closing on foreground
+    3. Euclidean distance transform on closed foreground
+    4. peak_local_max on distance transform → one marker per cell center
+    5. watershed on -distance, masked to foreground
     6. drop edge-touching, < min_area, > max_area instances; relabel sequentially
-
-The ``mask_to_instances`` function is pure (no IO) and deterministic given the
-config. It returns the instance label image and a small stats dataclass that
-the CLI accumulates per FOV for QA.
 """
 from __future__ import annotations
 

@@ -1,9 +1,4 @@
-"""Raw-image loading + percentile normalization.
-
-Single source of truth for ch0 of every per-cell crop. Mirrors the
-``normalize_image`` function in ``training 2.ipynb`` so the same preprocessing
-applies in Stage 1 (U-Net training) and Stage 3 (crop extraction).
-"""
+"""Raw-image loading and percentile normalization."""
 from __future__ import annotations
 
 from pathlib import Path

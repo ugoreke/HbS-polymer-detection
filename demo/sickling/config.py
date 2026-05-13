@@ -1,5 +1,4 @@
-"""Slimmed config for the demo. Only the dataclasses Stage 2 actually needs are
-exposed; ``load_config()`` returns defaults so the demo runs with no YAML."""
+"""Configuration dataclasses and default loader."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -17,7 +16,7 @@ class ClassesConfig:
 class InstancesConfig:
     closing_radius: int = 2
     peak_min_distance: int = 12
-    peak_threshold_rel: float = 0.3
+    peak_threshold_rel: float = 0.1
     min_area: int = 550
     max_area: int = 6000
     drop_edge_touching: bool = True
@@ -36,6 +35,5 @@ class Config:
 
 
 def load_config(*_overrides) -> Config:
-    """Return a default Config. The full sickling package supports YAML
-    overrides; the demo doesn't need them."""
+    """Return a Config with default values."""
     return Config()
