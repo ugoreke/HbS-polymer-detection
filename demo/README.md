@@ -13,8 +13,8 @@ boundaries) on the bottom.
 demo/
 ├── demo.ipynb        # 6-cell notebook (setup, imports, predict, overlay, plot)
 ├── sample.jpg        # the input image rendered by the notebook
-├── sickling/         # minimal bundled subset of the sickling package
-│   ├── config.py             # slimmed dataclasses (no YAML loader)
+├── sickling/
+│   ├── config.py             # dataclasses
 │   ├── io/images.py          # load_raw_greyscale, normalize_image, find_raw_image
 │   ├── stage1_unet/          # UNet + load_unet + predict_label_map
 │   └── stage2_instances/     # mask_to_instances_with_reasons (marker-seeded watershed)
