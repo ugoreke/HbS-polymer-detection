@@ -2,7 +2,7 @@
 via marker-seeded watershed.
 
 Pipeline:
-    1. foreground = (==polymer) | (==cell_body)
+    1. foreground = cell_body only (closing and markers are seeded from cell pixels)
     2. morphological closing on foreground
     3. Euclidean distance transform on closed foreground
     4. peak_local_max on distance transform → one marker per cell center
@@ -45,9 +45,9 @@ DROP_REASONS = (DROP_KEPT, DROP_EDGE, DROP_MIN, DROP_MAX, DROP_EMPTY)
 
 
 def _foreground_mask(label_map: np.ndarray, classes: ClassesConfig) -> np.ndarray:
-    """Foreground = polymer ∪ cell_body. Polymer is intentionally included so
-    sickle-shaped polymer extensions stay attached to the cell."""
-    return (label_map == classes.polymer) | (label_map == classes.cell_body)
+    """Foreground = cell_body only. Polymer is excluded so isolated polymer
+    regions do not produce spurious instance markers and outlines."""
+    return label_map == classes.cell_body
 
 
 def _touches_edge(props_bbox: tuple[int, int, int, int], shape: tuple[int, int]) -> bool:
